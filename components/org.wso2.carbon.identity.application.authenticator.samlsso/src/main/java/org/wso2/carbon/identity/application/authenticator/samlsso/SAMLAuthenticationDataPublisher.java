@@ -70,19 +70,20 @@ public class SAMLAuthenticationDataPublisher extends AbstractIdentityMessageHand
     @Override
     public void publishSessionCreation(HttpServletRequest httpServletRequest, AuthenticationContext authenticationContext,
                                        SessionContext sessionContext, Map<String, Object> map) {
-        Map<String, String> paramMap = new HashMap<>();
+//        Map<String, Object> paramMap = new HashMap<>();
         if("SAMLSSOAuthenticator".equals(authenticationContext.getCurrentAuthenticatedIdPs().entrySet().iterator().next
                 ().getValue().getAuthenticator().getName())) {
             AuthenticatorStateInfo authenticatorStateInfo = authenticationContext.getCurrentAuthenticatedIdPs().entrySet()
                     .iterator().next().getValue().getAuthenticator().getAuthenticatorStateInfo();
             String sessionIndex = ((StateInfo) authenticatorStateInfo).getSessionIndex();
             log.info("****** sessionIndex ****** " + sessionIndex);
-
-            String sessionId = authenticationContext.getContextIdentifier();
+//            Cookie[] cookies = httpServletRequest.getCookies();
+            Object sessionId =  map.entrySet().iterator().next().getValue();
+//            String sessionId = authenticationContext.getContextIdentifier();
             log.info("****** sessionID ****** " + sessionId);
-            paramMap.put(sessionIndex, sessionId);
+//            paramMap.put(sessionIndex, sessionId);
             DefaultSAML2SSOManager.sessionIndexMap.put(sessionIndex, sessionId);
-            authenticationContext.setAuthenticatorProperties(paramMap);
+//            authenticationContext.setAuthenticatorProperties(paramMap);
         }
     }
 

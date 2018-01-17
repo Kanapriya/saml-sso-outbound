@@ -121,10 +121,10 @@ public class SAML2FederatedLogoutRequestHandler extends HttpServlet {
             log.error("Recieved sessionIndex **************" + sessionIndex);
 
             //here onwards modify
-            String contextId = DefaultSAML2SSOManager.sessionIndexMap.get(sessionIndex);
+            Object contextId = DefaultSAML2SSOManager.sessionIndexMap.get(sessionIndex);
             log.error("Recieved ContextId **************" + contextId);
 
-            AuthenticationContext context = FrameworkUtils.getAuthenticationContextFromCache(contextId);
+            AuthenticationContext context = FrameworkUtils.getAuthenticationContextFromCache(String.valueOf(contextId));
             FrameworkUtils.getLogoutRequestHandler().handle(request, response, context);
 
         } catch (Throwable e) {

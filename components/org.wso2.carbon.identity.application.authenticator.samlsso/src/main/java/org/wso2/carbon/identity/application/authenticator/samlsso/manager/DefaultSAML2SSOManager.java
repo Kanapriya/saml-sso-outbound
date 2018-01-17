@@ -136,7 +136,7 @@ public class DefaultSAML2SSOManager implements SAML2SSOManager {
     private IdentityProvider identityProvider = null;
     private Map<String, String> properties;
     private String tenantDomain;
-    public static Map<String, String> sessionIndexMap = new HashMap();
+    public static Map<String, Object> sessionIndexMap = new HashMap();
 
     public static void doBootstrap() {
 
