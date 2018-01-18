@@ -26,6 +26,7 @@ import org.wso2.carbon.identity.application.authenticator.samlsso.model.StateInf
 import org.wso2.carbon.identity.core.bean.context.MessageContext;
 import org.wso2.carbon.identity.core.handler.AbstractIdentityMessageHandler;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,7 +71,6 @@ public class SAMLAuthenticationDataPublisher extends AbstractIdentityMessageHand
     @Override
     public void publishSessionCreation(HttpServletRequest httpServletRequest, AuthenticationContext authenticationContext,
                                        SessionContext sessionContext, Map<String, Object> map) {
-//        Map<String, Object> paramMap = new HashMap<>();
         if("SAMLSSOAuthenticator".equals(authenticationContext.getCurrentAuthenticatedIdPs().entrySet().iterator().next
                 ().getValue().getAuthenticator().getName())) {
             AuthenticatorStateInfo authenticatorStateInfo = authenticationContext.getCurrentAuthenticatedIdPs().entrySet()
@@ -78,12 +78,16 @@ public class SAMLAuthenticationDataPublisher extends AbstractIdentityMessageHand
             String sessionIndex = ((StateInfo) authenticatorStateInfo).getSessionIndex();
             log.info("****** sessionIndex ****** " + sessionIndex);
 //            Cookie[] cookies = httpServletRequest.getCookies();
-            Object sessionId =  map.entrySet().iterator().next().getValue();
-//            String sessionId = authenticationContext.getContextIdentifier();
+//            if (cookies != null) {
+//                for (Cookie cookie : cookies) {
+//                    if (cookie.getName().equals("JSESSIONID")) {
+//                        String session = cookie.getValue();
+//                    }
+//                }
+//            }
+            Object sessionId =  map.get("sessionId");
             log.info("****** sessionID ****** " + sessionId);
-//            paramMap.put(sessionIndex, sessionId);
             DefaultSAML2SSOManager.sessionIndexMap.put(sessionIndex, sessionId);
-//            authenticationContext.setAuthenticatorProperties(paramMap);
         }
     }
 
