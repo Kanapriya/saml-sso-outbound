@@ -20,6 +20,7 @@ package org.wso2.carbon.identity.application.authenticator.samlsso;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.wso2.carbon.identity.application.authentication.framework.config.ConfigurationFacade;
 import org.wso2.carbon.identity.application.authentication.framework.model.CommonAuthRequestWrapper;
+import org.wso2.carbon.identity.application.authentication.framework.model.CommonAuthResponseWrapper;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.authenticator.samlsso.exception.SAMLSSOException;
 import org.wso2.carbon.identity.application.authenticator.samlsso.manager.DefaultSAML2SSOManager;
@@ -128,8 +130,9 @@ public class SAML2FederatedLogoutRequestHandler extends HttpServlet {
 
             CommonAuthRequestWrapper requestWrapper = new CommonAuthRequestWrapper(request);
             requestWrapper.setParameter(FrameworkConstants.SESSION_DATA_KEY, (String) sessionDataKey);
-            String endpoint = "https://wso2islocal:9443/commonauth?commonAuthLogout=true&type=samlsso" +
-                    "&commonAuthCallerPath=/samlsso&relyingParty=travelocity.com";
+            String commonauthURL = IdentityUtil.getServerURL(FrameworkConstants.COMMONAUTH, true, true);
+            String endpoint = commonauthURL += "?" + "commonAuthLogout=true&type=samlsso" +
+            "&commonAuthCallerPath=/samlsso&relyingParty=travelocity.com";
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(endpoint);
             dispatcher.forward(requestWrapper,response);
         } catch (Throwable e) {
