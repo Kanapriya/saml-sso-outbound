@@ -56,7 +56,7 @@ import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.xml.sax.SAXException;
 
 /**
- * Created by kanapriya on 1/16/18.
+ * This servlet is used to access SAML logout request.
  */
 public class SAML2FederatedLogoutRequestHandler extends HttpServlet {
     private static Log log = LogFactory.getLog(SAML2FederatedLogoutRequestHandler.class);
