@@ -53,7 +53,7 @@ public class SAMLSSOAuthenticatorServiceComponent {
 
     private static Log log = LogFactory.getLog(SAMLSSOAuthenticatorServiceComponent.class);
     private static String postPage = null;
-    private static HttpService thisHttpService = null;
+    private static HttpService service = null;
 
     protected void setRealmService(RealmService realmService) {
         if (log.isDebugEnabled()) {
@@ -74,14 +74,13 @@ public class SAMLSSOAuthenticatorServiceComponent {
             Servlet samlSSOServlet = new ContextPathServletAdaptor(new SAML2FederatedLogoutRequestHandler(), "/fedlogout");
             try
             {
-                thisHttpService.registerServlet("/fedlogout", samlSSOServlet, null, null);
+                service.registerServlet("/fedlogout", samlSSOServlet, null, null);
             } catch (Exception e) {
                 String errMsg = "Error when registering SAML SSO Servlet via the HttpService.";
                 log.error(errMsg, e);
                 throw new RuntimeException(errMsg, e);
             }
 
-            log.error("Successfully registered the fedlogout servlet ****** \n ************ \n ************");
             SAMLSSOAuthenticator samlSSOAuthenticator = new SAMLSSOAuthenticator();
             ctxt.getBundleContext().registerService(ApplicationAuthenticator.class.getName(), samlSSOAuthenticator, null);
             log.info("---------- Servlet Registering -----------");
@@ -115,7 +114,7 @@ public class SAMLSSOAuthenticatorServiceComponent {
         if (log.isDebugEnabled()) {
             log.debug("HTTP Service is set in the SAML SSO bundle");
         }
-        thisHttpService = httpService;
+        service = httpService;
     }
 
     protected void unsetHttpService(HttpService httpService) {
@@ -123,7 +122,7 @@ public class SAMLSSOAuthenticatorServiceComponent {
             log.debug("HTTP Service is unset in the SAML SSO bundle");
         }
 
-        thisHttpService = null;
+        service = null;
     }
 
 

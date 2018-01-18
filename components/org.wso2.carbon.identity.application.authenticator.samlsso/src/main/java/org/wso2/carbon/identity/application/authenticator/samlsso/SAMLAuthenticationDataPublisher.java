@@ -27,9 +27,7 @@ import org.wso2.carbon.identity.application.authenticator.samlsso.model.StateInf
 import org.wso2.carbon.identity.core.bean.context.MessageContext;
 import org.wso2.carbon.identity.core.handler.AbstractIdentityMessageHandler;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -50,22 +48,26 @@ public class SAMLAuthenticationDataPublisher extends AbstractIdentityMessageHand
     }
 
     @Override
-    public void publishAuthenticationStepSuccess(HttpServletRequest httpServletRequest, AuthenticationContext authenticationContext, Map<String, Object> map) {
+    public void publishAuthenticationStepSuccess(HttpServletRequest httpServletRequest,
+                                                 AuthenticationContext authenticationContext, Map<String, Object> map) {
 
     }
 
     @Override
-    public void publishAuthenticationStepFailure(HttpServletRequest httpServletRequest, AuthenticationContext authenticationContext, Map<String, Object> map) {
+    public void publishAuthenticationStepFailure(HttpServletRequest httpServletRequest,
+                                                 AuthenticationContext authenticationContext, Map<String, Object> map) {
 
     }
 
     @Override
-    public void publishAuthenticationSuccess(HttpServletRequest httpServletRequest, AuthenticationContext authenticationContext, Map<String, Object> map) {
+    public void publishAuthenticationSuccess(HttpServletRequest httpServletRequest,
+                                             AuthenticationContext authenticationContext, Map<String, Object> map) {
 
     }
 
     @Override
-    public void publishAuthenticationFailure(HttpServletRequest httpServletRequest, AuthenticationContext authenticationContext, Map<String, Object> map) {
+    public void publishAuthenticationFailure(HttpServletRequest httpServletRequest,
+                                             AuthenticationContext authenticationContext, Map<String, Object> map) {
 
     }
 
@@ -93,12 +95,15 @@ public class SAMLAuthenticationDataPublisher extends AbstractIdentityMessageHand
     }
 
     @Override
-    public void publishSessionUpdate(HttpServletRequest httpServletRequest, AuthenticationContext authenticationContext, SessionContext sessionContext, Map<String, Object> map) {
+    public void publishSessionUpdate(HttpServletRequest httpServletRequest, AuthenticationContext authenticationContext,
+                                     SessionContext sessionContext, Map<String, Object> map) {
 
     }
 
     @Override
-    public void publishSessionTermination(HttpServletRequest httpServletRequest, AuthenticationContext authenticationContext, SessionContext sessionContext, Map<String, Object> map) {
+    public void publishSessionTermination(HttpServletRequest httpServletRequest,
+                                          AuthenticationContext authenticationContext, SessionContext sessionContext,
+                                          Map<String, Object> map) {
 
     }
 }

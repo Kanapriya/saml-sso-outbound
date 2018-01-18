@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,8 +46,9 @@ import org.opensaml.xml.util.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
-import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils;
+import org.wso2.carbon.identity.application.authentication.framework.config.ConfigurationFacade;
+import org.wso2.carbon.identity.application.authentication.framework.model.CommonAuthRequestWrapper;
+import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.authenticator.samlsso.exception.SAMLSSOException;
 import org.wso2.carbon.identity.application.authenticator.samlsso.manager.DefaultSAML2SSOManager;
 import org.wso2.carbon.identity.application.authenticator.samlsso.util.SSOConstants;
@@ -63,7 +65,8 @@ public class SAML2FederatedLogoutRequestHandler extends HttpServlet {
 
     public SAML2FederatedLogoutRequestHandler() {}
 
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
+    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+            throws ServletException, IOException
     {
         log.error("--------------------- Inside doGet ----------------------- ");
     }
@@ -120,13 +123,15 @@ public class SAML2FederatedLogoutRequestHandler extends HttpServlet {
 
             log.error("Recieved sessionIndex **************" + sessionIndex);
 
-            //here onwards modify
-            Object contextId = DefaultSAML2SSOManager.sessionIndexMap.get(sessionIndex);
-            log.error("Recieved ContextId **************" + contextId);
+            Object sessionDataKey = DefaultSAML2SSOManager.sessionIndexMap.get(sessionIndex);
+            log.error("Recieved ContextId **************" + sessionDataKey);
 
-            AuthenticationContext context = FrameworkUtils.getAuthenticationContextFromCache(String.valueOf(contextId));
-            FrameworkUtils.getLogoutRequestHandler().handle(request, response, context);
-
+            CommonAuthRequestWrapper requestWrapper = new CommonAuthRequestWrapper(request);
+            requestWrapper.setParameter(FrameworkConstants.SESSION_DATA_KEY, (String) sessionDataKey);
+            String endpoint = "https://wso2islocal:9443/commonauth?commonAuthLogout=true&type=samlsso" +
+                    "&commonAuthCallerPath=/samlsso&relyingParty=travelocity.com";
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(endpoint);
+            dispatcher.forward(requestWrapper,response);
         } catch (Throwable e) {
             e.printStackTrace();
         }
