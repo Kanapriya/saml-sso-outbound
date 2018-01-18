@@ -47,6 +47,7 @@ import org.opensaml.xml.util.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.wso2.carbon.identity.application.authentication.framework.CommonAuthenticationHandler;
 import org.wso2.carbon.identity.application.authentication.framework.config.ConfigurationFacade;
 import org.wso2.carbon.identity.application.authentication.framework.model.CommonAuthRequestWrapper;
 import org.wso2.carbon.identity.application.authentication.framework.model.CommonAuthResponseWrapper;
@@ -127,14 +128,21 @@ public class SAML2FederatedLogoutRequestHandler extends HttpServlet {
 
             Object sessionDataKey = DefaultSAML2SSOManager.sessionIndexMap.get(sessionIndex);
             log.error("Recieved ContextId **************" + sessionDataKey);
-
+            CommonAuthenticationHandler commonAuthenticationHandler = new CommonAuthenticationHandler();
             CommonAuthRequestWrapper requestWrapper = new CommonAuthRequestWrapper(request);
             requestWrapper.setParameter(FrameworkConstants.SESSION_DATA_KEY, (String) sessionDataKey);
-            String commonauthURL = IdentityUtil.getServerURL(FrameworkConstants.COMMONAUTH, true, true);
-            String endpoint = commonauthURL += "?" + "commonAuthLogout=true&type=samlsso" +
-            "&commonAuthCallerPath=/samlsso&relyingParty=travelocity.com";
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(endpoint);
-            dispatcher.forward(requestWrapper,response);
+            requestWrapper.setParameter("commonAuthLogout","true");
+            requestWrapper.setParameter(FrameworkConstants.RequestParams.TYPE,"samlsso");
+            requestWrapper.setParameter("commonAuthCallerPath","/samlsso");
+            requestWrapper.setParameter("relyingParty","travelocity.com");
+            CommonAuthResponseWrapper responseWrapper = new CommonAuthResponseWrapper(response);
+            commonAuthenticationHandler.doGet(requestWrapper, responseWrapper);
+//            String commonauthURL = IdentityUtil.getServerURL
+//                    (FrameworkConstants.COMMONAUTH, true, true);
+//            String endpoint = commonauthURL += "?" + "commonAuthLogout=true&type=samlsso" +
+//            "&commonAuthCallerPath=/samlsso&relyingParty=travelocity.com";
+//            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(endpoint);
+//            dispatcher.forward(requestWrapper,response);
         } catch (Throwable e) {
             e.printStackTrace();
         }
