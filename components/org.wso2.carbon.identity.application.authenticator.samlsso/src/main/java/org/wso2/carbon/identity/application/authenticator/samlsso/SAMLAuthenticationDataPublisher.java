@@ -21,6 +21,7 @@ import org.wso2.carbon.identity.application.authentication.framework.Authenticat
 import org.wso2.carbon.identity.application.authentication.framework.AuthenticatorStateInfo;
 import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
 import org.wso2.carbon.identity.application.authentication.framework.context.SessionContext;
+import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.authenticator.samlsso.manager.DefaultSAML2SSOManager;
 import org.wso2.carbon.identity.application.authenticator.samlsso.model.StateInfo;
 import org.wso2.carbon.identity.core.bean.context.MessageContext;
@@ -85,7 +86,7 @@ public class SAMLAuthenticationDataPublisher extends AbstractIdentityMessageHand
 //                    }
 //                }
 //            }
-            Object sessionId =  map.get("sessionId");
+            Object sessionId =  map.get(FrameworkConstants.AnalyticsAttributes.SESSION_ID);
             log.info("****** sessionID ****** " + sessionId);
             DefaultSAML2SSOManager.sessionIndexMap.put(sessionIndex, sessionId);
         }
