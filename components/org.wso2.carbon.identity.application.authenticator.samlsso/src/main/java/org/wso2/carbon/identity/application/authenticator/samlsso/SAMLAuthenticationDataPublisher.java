@@ -24,9 +24,11 @@ import org.wso2.carbon.identity.application.authentication.framework.context.Ses
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.authenticator.samlsso.manager.DefaultSAML2SSOManager;
 import org.wso2.carbon.identity.application.authenticator.samlsso.model.StateInfo;
+import org.wso2.carbon.identity.application.authenticator.samlsso.util.SSOConstants;
 import org.wso2.carbon.identity.core.bean.context.MessageContext;
 import org.wso2.carbon.identity.core.handler.AbstractIdentityMessageHandler;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -80,14 +82,6 @@ public class SAMLAuthenticationDataPublisher extends AbstractIdentityMessageHand
                     .iterator().next().getValue().getAuthenticator().getAuthenticatorStateInfo();
             String sessionIndex = ((StateInfo) authenticatorStateInfo).getSessionIndex();
             log.info("****** sessionIndex ****** " + sessionIndex);
-//            Cookie[] cookies = httpServletRequest.getCookies();
-//            if (cookies != null) {
-//                for (Cookie cookie : cookies) {
-//                    if (cookie.getName().equals("JSESSIONID")) {
-//                        String session = cookie.getValue();
-//                    }
-//                }
-//            }
             Object sessionId =  map.get(FrameworkConstants.AnalyticsAttributes.SESSION_ID);
             log.info("****** sessionID ****** " + sessionId);
             DefaultSAML2SSOManager.sessionIndexMap.put(sessionIndex, sessionId);

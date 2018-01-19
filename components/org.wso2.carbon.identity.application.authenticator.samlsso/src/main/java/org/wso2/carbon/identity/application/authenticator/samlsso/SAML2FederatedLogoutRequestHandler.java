@@ -24,8 +24,10 @@ import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,6 +49,7 @@ import org.opensaml.xml.util.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.wso2.carbon.identity.application.authentication.framework.AuthenticatorFlowStatus;
 import org.wso2.carbon.identity.application.authentication.framework.CommonAuthenticationHandler;
 import org.wso2.carbon.identity.application.authentication.framework.config.ConfigurationFacade;
 import org.wso2.carbon.identity.application.authentication.framework.model.CommonAuthRequestWrapper;
@@ -130,19 +133,19 @@ public class SAML2FederatedLogoutRequestHandler extends HttpServlet {
             log.error("Recieved ContextId **************" + sessionDataKey);
             CommonAuthenticationHandler commonAuthenticationHandler = new CommonAuthenticationHandler();
             CommonAuthRequestWrapper requestWrapper = new CommonAuthRequestWrapper(request);
-            requestWrapper.setParameter(FrameworkConstants.SESSION_DATA_KEY, (String) sessionDataKey);
+
+            AtomicReference<Cookie> sessionCookie = new AtomicReference<>(new Cookie(FrameworkConstants.COMMONAUTH_COOKIE
+                    , (String) sessionDataKey));
+//            AtomicReference<Cookie> sessionCookie = new AtomicReference<>(new Cookie("JSESSIONID", (String)
+//                    sessionDataKey));
+
+            requestWrapper.setParameter(FrameworkConstants.COMMONAUTH_COOKIE, String.valueOf(sessionCookie.get()));
             requestWrapper.setParameter("commonAuthLogout","true");
             requestWrapper.setParameter(FrameworkConstants.RequestParams.TYPE,"samlsso");
-            requestWrapper.setParameter("commonAuthCallerPath","/samlsso");
+            requestWrapper.setParameter("commonAuthCallerPath","http://localhost:8080/travelocity.com/home.jsp");
             requestWrapper.setParameter("relyingParty","travelocity.com");
             CommonAuthResponseWrapper responseWrapper = new CommonAuthResponseWrapper(response);
             commonAuthenticationHandler.doGet(requestWrapper, responseWrapper);
-//            String commonauthURL = IdentityUtil.getServerURL
-//                    (FrameworkConstants.COMMONAUTH, true, true);
-//            String endpoint = commonauthURL += "?" + "commonAuthLogout=true&type=samlsso" +
-//            "&commonAuthCallerPath=/samlsso&relyingParty=travelocity.com";
-//            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(endpoint);
-//            dispatcher.forward(requestWrapper,response);
         } catch (Throwable e) {
             e.printStackTrace();
         }
