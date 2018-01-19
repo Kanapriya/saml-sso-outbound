@@ -134,7 +134,7 @@ public class SAML2FederatedLogoutRequestHandler extends HttpServlet {
             CommonAuthenticationHandler commonAuthenticationHandler = new CommonAuthenticationHandler();
             CommonAuthRequestWrapper requestWrapper = new CommonAuthRequestWrapper(request);
 
-            AtomicReference<Cookie> sessionCookie = new AtomicReference<>(new Cookie(FrameworkConstants.COMMONAUTH_COOKIE
+            AtomicReference<Cookie> sessionCookie = new AtomicReference<>(new Cookie(FrameworkConstants.SESSION_DATA_KEY
                     , (String) sessionDataKey));
 //            AtomicReference<Cookie> sessionCookie = new AtomicReference<>(new Cookie("JSESSIONID", (String)
 //                    sessionDataKey));
