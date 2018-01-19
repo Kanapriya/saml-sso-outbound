@@ -130,16 +130,16 @@ public class SAML2FederatedLogoutRequestHandler extends HttpServlet {
             log.error("Recieved sessionIndex **************" + sessionIndex);
 
             Object sessionDataKey = DefaultSAML2SSOManager.sessionIndexMap.get(sessionIndex);
-            log.error("Recieved ContextId **************" + sessionDataKey);
+            log.error("Recieved session id **************" + sessionDataKey);
             CommonAuthenticationHandler commonAuthenticationHandler = new CommonAuthenticationHandler();
             CommonAuthRequestWrapper requestWrapper = new CommonAuthRequestWrapper(request);
 
-            AtomicReference<Cookie> sessionCookie = new AtomicReference<>(new Cookie(FrameworkConstants.SESSION_DATA_KEY
-                    , (String) sessionDataKey));
+            Cookie sessionCookie = new Cookie(FrameworkConstants.SESSION_DATA_KEY
+                    , (String) sessionDataKey);
 //            AtomicReference<Cookie> sessionCookie = new AtomicReference<>(new Cookie("JSESSIONID", (String)
 //                    sessionDataKey));
 
-            requestWrapper.setParameter(FrameworkConstants.COMMONAUTH_COOKIE, String.valueOf(sessionCookie.get()));
+            requestWrapper.setParameter(FrameworkConstants.COMMONAUTH_COOKIE, String.valueOf(sessionCookie));
             requestWrapper.setParameter("commonAuthLogout","true");
             requestWrapper.setParameter(FrameworkConstants.RequestParams.TYPE,"samlsso");
             requestWrapper.setParameter("commonAuthCallerPath","http://localhost:8080/travelocity.com/home.jsp");
