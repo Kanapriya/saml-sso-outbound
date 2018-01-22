@@ -55,6 +55,7 @@ import org.wso2.carbon.identity.application.authentication.framework.config.Conf
 import org.wso2.carbon.identity.application.authentication.framework.model.CommonAuthRequestWrapper;
 import org.wso2.carbon.identity.application.authentication.framework.model.CommonAuthResponseWrapper;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
+import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils;
 import org.wso2.carbon.identity.application.authenticator.samlsso.exception.SAMLSSOException;
 import org.wso2.carbon.identity.application.authenticator.samlsso.manager.DefaultSAML2SSOManager;
 import org.wso2.carbon.identity.application.authenticator.samlsso.util.SSOConstants;
@@ -131,21 +132,23 @@ public class SAML2FederatedLogoutRequestHandler extends HttpServlet {
 
             Object sessionDataKey = DefaultSAML2SSOManager.sessionIndexMap.get(sessionIndex);
             log.error("Recieved session id **************" + sessionDataKey);
-            CommonAuthenticationHandler commonAuthenticationHandler = new CommonAuthenticationHandler();
-            CommonAuthRequestWrapper requestWrapper = new CommonAuthRequestWrapper(request);
+            FrameworkUtils.removeSessionContextFromCache((String) sessionDataKey);
 
-            Cookie sessionCookie = new Cookie(FrameworkConstants.SESSION_DATA_KEY
-                    , (String) sessionDataKey);
-//            AtomicReference<Cookie> sessionCookie = new AtomicReference<>(new Cookie("JSESSIONID", (String)
-//                    sessionDataKey));
-
-            requestWrapper.setParameter(FrameworkConstants.COMMONAUTH_COOKIE, String.valueOf(sessionCookie));
-            requestWrapper.setParameter("commonAuthLogout","true");
-            requestWrapper.setParameter(FrameworkConstants.RequestParams.TYPE,"samlsso");
-            requestWrapper.setParameter("commonAuthCallerPath","http://localhost:8080/travelocity.com/home.jsp");
-            requestWrapper.setParameter("relyingParty","travelocity.com");
-            CommonAuthResponseWrapper responseWrapper = new CommonAuthResponseWrapper(response);
-            commonAuthenticationHandler.doGet(requestWrapper, responseWrapper);
+//            CommonAuthenticationHandler commonAuthenticationHandler = new CommonAuthenticationHandler();
+//            CommonAuthRequestWrapper requestWrapper = new CommonAuthRequestWrapper(request);
+//
+//            Cookie sessionCookie = new Cookie(FrameworkConstants.COMMONAUTH_COOKIE
+//                    , (String) sessionDataKey);
+////            AtomicReference<Cookie> sessionCookie = new AtomicReference<>(new Cookie("JSESSIONID", (String)
+////                    sessionDataKey));
+//
+//            requestWrapper.setParameter(FrameworkConstants.COMMONAUTH_COOKIE, String.valueOf(sessionCookie));
+//            requestWrapper.setParameter("commonAuthLogout","true");
+//            requestWrapper.setParameter(FrameworkConstants.RequestParams.TYPE,"samlsso");
+//            requestWrapper.setParameter("commonAuthCallerPath","http://localhost:8080/travelocity.com/home.jsp");
+//            requestWrapper.setParameter("relyingParty","travelocity.com");
+//            CommonAuthResponseWrapper responseWrapper = new CommonAuthResponseWrapper(response);
+//            commonAuthenticationHandler.doGet(requestWrapper, responseWrapper);
         } catch (Throwable e) {
             e.printStackTrace();
         }
